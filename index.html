@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driving Through My Website</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; background-color: #f0f0f0; }
+        #scene-container { width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: 1; }
+        .section-overlay {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2); max-width: 600px; width: 90%;
+            max-height: 80vh; overflow-y: auto; display: none; text-align: center; z-index: 10;
+        }
+        .section-overlay h2 { margin-top: 0; }
+        .section-overlay img { max-width: 100%; height: auto; margin-top: 15px; border-radius: 5px; }
+        .section-overlay button.doc-preview-btn {
+            background-color: #007bff; color: white; padding: 10px 15px;
+            border: none; border-radius: 5px; cursor: pointer; margin-top: 15px;
+        }
+        .section-overlay button.doc-preview-btn:hover { background-color: #0056b3; }
+        .controls {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            padding: 10px; background-color: rgba(0,0,0,0.7); border-radius: 5px; z-index: 20;
+        }
+        .controls button {
+            margin: 0 5px; padding: 10px 15px; background-color: #4CAF50; color: white;
+            border: none; border-radius: 3px; cursor: pointer;
+        }
+        .controls button:hover { background-color: #45a049; }
+        .controls button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; max-width: 800px; height: 85vh; border-radius: 10px; position: relative; display: flex; flex-direction: column; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        .modal-header h3 { margin: 0; }
+        .close-button { color: #aaa; font-size: 28px; font-weight: bold; cursor: pointer; }
+        .close-button:hover, .close-button:focus { color: black; text-decoration: none; }
+        .modal-body { flex-grow: 1; }
+        .modal-body iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+    <div id="scene-container"></div>
+
+    <!-- Section Overlays -->
+    <div id="intro-section" class="section-overlay">
+        <h2>Welcome! Mini Intro</h2>
+        <p>This is a journey through a digital landscape. Hop in the car and let's explore!</p>
+        <p>Use the buttons below to navigate to different points of interest.</p>
+    </div>
+    <div id="about-me-section" class="section-overlay">
+        <h2>About Me</h2>
+        <p>I have a deep passion for finance, economics and investment who always is looking for ways to expand my knowledge.</p>
+        <p>I enjoy creating interactive experiences and learning new technologies.</p>
+        <button id="preview-resume-button" class="doc-preview-btn">View My Resume (PDF)</button>
+        <p>Fun fact: I dream in code sometimes.</p>
+    </div>
+    <div id="pictures-section" class="section-overlay">
+        <h2>Live Experience</h2>
+        <p>Here are some proof and screenshots of my endevours in the trading market. I managed to make a £20 account go to £6000 in the matter of 3 days. This is extreme but I used my skillsets to look for the perfect market oppurtunity to capitalise on this endevour.</p>
+        <img src="images/1.png" alt="Trading Screenshot TBBK">
+        <img src="images/2.PNG" alt="Another Trading Related Image">
+        <img src="images/3.png" alt="Placeholder Chart">
+        <img src="images/4.PNG" alt="Placeholder Chart">
+        <img src="images/5.png" alt="Placeholder Chart">
+        <img src="images/6.png" alt="Placeholder Chart">
+        <img src="images/7.png" alt="Placeholder Chart">
+        <img src="images/8.png" alt="Placeholder Chart">
+        <img src="images/9.PNG" alt="Another Trading Related Image">
+        <img src="images/10.png" alt="Placeholder Chart">
+        <img src="images/11.png" alt="Placeholder Chart">
+        <img src="images/12.png" alt="Placeholder Chart">
+        <img src="images/13.png" alt="Placeholder Chart">
+        <img src="images/14.png" alt="Placeholder Chart">
+        <img src="images/15.png" alt="Placeholder Chart">
+        <img src="images/16.png" alt="Placeholder Chart">
+        <img src="images/17.png" alt="Placeholder Chart">
+        <img src="images/18.png" alt="Placeholder Chart">
+        <img src="images/19.png" alt="Placeholder Chart">
+        <img src="images/20.png" alt="Placeholder Chart">
+    </div>
+    <div id="Macro-section" class="section-overlay">
+        <h2>Macro Aspect</h2>
+        <p>This stop is to look at current market sentiment and direction. Right now the market look bullish and below are the reasons.</p>
+        <p>Looking at the m2 money supply the speed at which it is increasing is steady indicating no reversal or any disruptions.</p>
+        <img src="images/m2.jpg" alt="Placeholder Chart">
+        <p>Furthermore looking at treasury spreads, especially the 10s-2s, we are able to see an economic expansion rather than a contraction.</p>
+        <img src="images/spread.png" alt="Placeholder Chart">
+        <p>Also looking at CPI and PPI data we are able to see the rate of chage slow down it may be indicating a potential collapse but this also is due to fundamental reasons as tariffs are put into place.</p>
+        <p>Looking at the 6 month lagged S&P500 price with the GDP data we can see that the S&P500 increases whilst the current GDP has dropped in 2025 in the first quarter. But this can be played off as fundamental reasoning with Trump first quarter in office. We should see a rebound up which is currently occuring.</p>
+    </div>
+     <div id="fun-section" class="section-overlay">
+        <h2>Current outlooks</h2>
+        <p>This stop is my current outlooks and watch I am projecting will occur with specific assets.</p>
+        <p>Soybean longs. This is due to seasonality reasons and also Severe Drought Impact: Official Zambian Gov. forecast (May 2024) projects 169,700 Metric Tons (a 78% reduction from the previous season). Some market analysts had estimated around 150,000 tons.</p>
+        <p>Even though WASDE reports have been bearish looking at the droughts and early harvests in Argentina, importers like China will be willing to pay more for the better quality harvests</p>
+        <img src="images/soybean.png" alt="Placeholder Chart">
+        <p>With the curret soybean supply we are able to see that their is a forecast of a decline.</p>
+    </div>
+
+    <div id="document-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Document Preview</h3>
+                <span id="modal-close-button" class="close-button">×</span>
+            </div>
+            <div class="modal-body">
+                <iframe id="document-iframe" src="" title="Document Preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button id="prev-stop">Previous Stop</button>
+        <button id="next-stop">Next Stop</button>
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        let scene, camera, renderer;
+        let car, mainBody, pathCurve, roadMesh, stopMarkers = []; 
+        let sunMesh, birds = [];
+        let riverMesh, lakeMesh, bridgeSupportsGroup, bridgeRailingsGroup;
+        let riverCurve; 
+        let currentStopIndex = -1;
+        let targetT = 0, currentT = 0;
+        let prevCarT = 0; 
+        const carSpeed = 0.01, cameraLerpFactor = 0.05;
+
+        const groundLevel = 0;
+        const waterSurfaceLevel = groundLevel - 7.0; 
+        const riverBedDepth = 1.5;                   
+        const roadSurfaceYLevel = groundLevel + 0.1; 
+        const roadThickness = 0.2;                   
+        const flatRoadWidth = 4.0;                   
+        
+        const fogNear = 70; 
+        const fogFar = 250; 
+
+        const stops = [
+            { t: 0.1, sectionId: 'intro-section', name: 'Intro' },
+            { t: 0.3, sectionId: 'about-me-section', name: 'About Me' },
+            { t: 0.5, sectionId: 'pictures-section', name: 'Pictures' },
+            { t: 0.75, sectionId: 'Macro-section', name: 'Macro' },
+            { t: 0.95, sectionId: 'fun-section', name: 'Fun'}
+        ];
+
+        const sectionOverlays = {
+            'intro-section': document.getElementById('intro-section'),
+            'about-me-section': document.getElementById('about-me-section'),
+            'pictures-section': document.getElementById('pictures-section'),
+            'Macro-section': document.getElementById('Macro-section'),
+            'fun-section': document.getElementById('fun-section'),
+        };
+        const prevButton = document.getElementById('prev-stop');
+        const nextButton = document.getElementById('next-stop');
+        const docModal = document.getElementById('document-modal');
+        const docIframe = document.getElementById('document-iframe');
+        const previewResumeButton = document.getElementById('preview-resume-button');
+        const modalCloseButton = document.getElementById('modal-close-button');
+        const resumePath = "Faran.Ahmad.CV.pdf";
+
+        init();
+        animate();
+
+        function createTree(position) {
+            const treeGroup = new THREE.Group();
+            const trunkHeight = Math.random() * 4 + 3;
+            const trunkRadius = Math.random() * 0.3 + 0.2;
+            const trunkGeometry = new THREE.CylinderGeometry(trunkRadius * 0.7, trunkRadius, trunkHeight, 8);
+            const trunkMaterial = new THREE.MeshStandardMaterial({ color: 0x8B4513 });
+            const trunk = new THREE.Mesh(trunkGeometry, trunkMaterial);
+            trunk.castShadow = true; trunk.receiveShadow = true;
+            trunk.position.y = trunkHeight / 2;
+            treeGroup.add(trunk);
+            const leavesHeight = Math.random() * 3 + trunkHeight * 0.6;
+            const leavesRadius = trunkRadius * (Math.random() * 2 + 2.5);
+            const leavesGeometry = new THREE.ConeGeometry(leavesRadius, leavesHeight, 16);
+            const leavesMaterial = new THREE.MeshStandardMaterial({ color: 0x228B22 });
+            const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+            leaves.castShadow = true;
+            leaves.position.y = trunkHeight + leavesHeight / 2 - 0.5;
+            treeGroup.add(leaves);
+            treeGroup.position.copy(position);
+            treeGroup.position.y = groundLevel;
+            scene.add(treeGroup);
+            return treeGroup;
+        }
+
+        function createBush(position) {
+            const bushGroup = new THREE.Group();
+            const bushMaterial = new THREE.MeshStandardMaterial({ color: 0x1A431A });
+            const numSpheres = Math.floor(Math.random() * 3) + 3;
+            for (let i = 0; i < numSpheres; i++) {
+                const radius = Math.random() * 0.8 + 0.5;
+                const sphereGeo = new THREE.SphereGeometry(radius, 8, 6);
+                const sphereMesh = new THREE.Mesh(sphereGeo, bushMaterial);
+                sphereMesh.castShadow = true; sphereMesh.receiveShadow = true;
+                sphereMesh.position.set((Math.random()-0.5)*radius*1.5, radius*0.5+(Math.random()-0.5)*radius*0.2, (Math.random()-0.5)*radius*1.5);
+                bushGroup.add(sphereMesh);
+            }
+            bushGroup.position.copy(position);
+            bushGroup.position.y = groundLevel;
+            scene.add(bushGroup);
+            return bushGroup;
+        }
+
+        function createBird() {
+            const bird = new THREE.Group();
+            const birdBodyMaterial = new THREE.MeshBasicMaterial({ color: 0x111111 });
+            const wingShape = new THREE.Shape();
+            wingShape.moveTo(0,0); wingShape.lineTo(0.5,0.2); wingShape.lineTo(0,0.1); wingShape.lineTo(-0.5,0.2); wingShape.lineTo(0,0);
+            const extrudeSettings = { depth: 0.05, bevelEnabled: false };
+            const wingGeometry = new THREE.ExtrudeGeometry(wingShape, extrudeSettings);
+            const wingMesh = new THREE.Mesh(wingGeometry, birdBodyMaterial);
+            bird.add(wingMesh);
+            bird.scale.set(5,5,5);
+            bird.userData = {
+                speed: Math.random()*0.1+0.05, altitude: Math.random()*50+80,
+                startX: (Math.random()-0.5)*2*fogFar, startZ: -fogFar-Math.random()*50,
+                direction: new THREE.Vector3(Math.random()*0.2-0.1,0,1).normalize()
+            };
+            if(Math.random()<0.5){ bird.userData.startZ = fogFar+Math.random()*50; bird.userData.direction.z *= -1; }
+            bird.position.set(bird.userData.startX, bird.userData.altitude, bird.userData.startZ);
+            bird.lookAt(bird.position.clone().add(bird.userData.direction));
+            scene.add(bird);
+            return bird;
+        }
+
+        function createBridgeElements(roadPath, bridgeStartT, bridgeEndT, roadW, roadThick, roadCenterY) {
+            bridgeSupportsGroup = new THREE.Group();
+            bridgeRailingsGroup = new THREE.Group();
+            scene.add(bridgeSupportsGroup);
+            scene.add(bridgeRailingsGroup);
+
+            const supportRadius = 0.4;
+            const bridgeRoadTopSurfaceY = roadCenterY + roadThick / 2; 
+            const bridgeRoadBottomSurfaceY = roadCenterY - roadThick / 2; 
+            const supportBaseY = waterSurfaceLevel - riverBedDepth - 0.5; 
+            const supportTopY = bridgeRoadBottomSurfaceY; 
+            const supportHeight = supportTopY - supportBaseY;
+
+            if (supportHeight <= 0) { 
+                console.warn("Bridge support height is zero or negative. Check Y-levels. SupportTopY:", supportTopY, "SupportBaseY:", supportBaseY);
+                return;
+            }
+
+            const supportGeometry = new THREE.CylinderGeometry(supportRadius, supportRadius, supportHeight, 12);
+            const supportMaterial = new THREE.MeshStandardMaterial({ color: 0x606060 });
+            const railingHeight = 0.6;
+            const railingPostThickness = 0.1;
+            const railingBarThickness = 0.05;
+            const railingMaterial = new THREE.MeshStandardMaterial({ color: 0x454545 });
+            const bridgeLength = roadPath.getLength() * (bridgeEndT - bridgeStartT);
+            const desiredSegmentLength = Math.max(1.5, roadW * 0.5); 
+            const numSegments = Math.max(3, Math.floor(bridgeLength / desiredSegmentLength));
+
+            for (let i = 0; i <= numSegments; i++) {
+                const t = bridgeStartT + (i / numSegments) * (bridgeEndT - bridgeStartT);
+                const pointOnPath = roadPath.getPointAt(t); 
+                const tangent = roadPath.getTangentAt(t).normalize();
+                const normal = new THREE.Vector3(-tangent.z, 0, tangent.x); 
+
+                if (i % Math.max(1, Math.floor(numSegments / 3)) === 0 || i === numSegments) { 
+                    const supportL = new THREE.Mesh(supportGeometry, supportMaterial);
+                    supportL.position.set( pointOnPath.x + normal.x * (roadW / 2 + supportRadius * 0.7), supportBaseY + supportHeight / 2, pointOnPath.z + normal.z * (roadW / 2 + supportRadius * 0.7) );
+                    supportL.castShadow = true; supportL.receiveShadow = true; bridgeSupportsGroup.add(supportL);
+                    const supportR = new THREE.Mesh(supportGeometry, supportMaterial);
+                    supportR.position.set( pointOnPath.x - normal.x * (roadW / 2 + supportRadius * 0.7), supportBaseY + supportHeight / 2, pointOnPath.z - normal.z * (roadW / 2 + supportRadius * 0.7) );
+                    supportR.castShadow = true; supportR.receiveShadow = true; bridgeSupportsGroup.add(supportR);
+                }
+                const postGeometry = new THREE.BoxGeometry(railingPostThickness, railingHeight, railingPostThickness);
+                const postL = new THREE.Mesh(postGeometry, railingMaterial);
+                postL.position.set( pointOnPath.x + normal.x * (roadW / 2 + railingPostThickness / 2), bridgeRoadTopSurfaceY + railingHeight / 2, pointOnPath.z + normal.z * (roadW / 2 + railingPostThickness / 2) );
+                postL.castShadow = true; bridgeRailingsGroup.add(postL);
+                const postR = new THREE.Mesh(postGeometry, railingMaterial);
+                postR.position.set( pointOnPath.x - normal.x * (roadW / 2 + railingPostThickness / 2), bridgeRoadTopSurfaceY + railingHeight / 2, pointOnPath.z - normal.z * (roadW / 2 + railingPostThickness / 2) );
+                postR.castShadow = true; bridgeRailingsGroup.add(postR);
+                if (i < numSegments) {
+                    const nextPointOnPath = roadPath.getPointAt(bridgeStartT + ((i + 1) / numSegments) * (bridgeEndT - bridgeStartT));
+                    const railSegmentLengthVal = pointOnPath.distanceTo(nextPointOnPath);
+                    const barGeometry = new THREE.BoxGeometry(railingBarThickness, railingBarThickness, railSegmentLengthVal + 0.01);
+                    const midPoint = pointOnPath.clone().lerp(nextPointOnPath, 0.5);
+                    for (let h_idx = 0; h_idx < 2; h_idx++) { 
+                        const barY = bridgeRoadTopSurfaceY + railingHeight * (h_idx === 0 ? 0.3 : 0.7);
+                        const barL = new THREE.Mesh(barGeometry, railingMaterial);
+                        barL.position.set( midPoint.x + normal.x * (roadW / 2 + railingPostThickness / 2), barY, midPoint.z + normal.z * (roadW / 2 + railingPostThickness / 2) );
+                        barL.lookAt(nextPointOnPath.clone().addScaledVector(normal, roadW/2 + railingPostThickness/2).setY(barY));
+                        barL.castShadow = true; bridgeRailingsGroup.add(barL);
+                        const barR = new THREE.Mesh(barGeometry, railingMaterial);
+                        barR.position.set( midPoint.x - normal.x * (roadW / 2 + railingPostThickness / 2), barY, midPoint.z - normal.z * (roadW / 2 + railingPostThickness / 2) );
+                        barR.lookAt(nextPointOnPath.clone().addScaledVector(normal, -(roadW/2 + railingPostThickness/2)).setY(barY));
+                        barR.castShadow = true; bridgeRailingsGroup.add(barR);
+                    }
+                }
+            }
+        }
+
+
+        function init() {
+            scene = new THREE.Scene();
+            
+            const upperSkyBlue = new THREE.Color(0x5080D0); 
+            const horizonOrange = new THREE.Color(0xFFB070); 
+            const sunsetGroundHemiColor = new THREE.Color(0x403020); 
+
+            scene.background = upperSkyBlue; 
+            scene.fog = new THREE.Fog(horizonOrange, fogNear, fogFar); 
+
+            const hemisphereLight = new THREE.HemisphereLight(upperSkyBlue, sunsetGroundHemiColor, 1.0); 
+            scene.add(hemisphereLight);
+
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 15, 25);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping; 
+            renderer.toneMappingExposure = 1.0; 
+            document.getElementById('scene-container').appendChild(renderer.domElement);
+
+            const ambientLight = new THREE.AmbientLight(0xFFE5CC, 0.5); 
+            scene.add(ambientLight);
+            
+            const sunGeometry = new THREE.SphereGeometry(20,32,32); 
+            const sunMaterial = new THREE.MeshBasicMaterial({color:0xFFFF99, fog:false}); 
+            sunMesh = new THREE.Mesh(sunGeometry,sunMaterial); 
+            sunMesh.position.set(-180,80,-240); 
+            scene.add(sunMesh); 
+            
+            const directionalLight = new THREE.DirectionalLight(0xFFD0A0, 1.2); 
+            directionalLight.position.copy(sunMesh.position).normalize().multiplyScalar(100);
+            directionalLight.target.position.set(0,0,0); scene.add(directionalLight.target);
+            directionalLight.castShadow = true; 
+            directionalLight.shadow.mapSize.width=4096; directionalLight.shadow.mapSize.height=4096;
+            directionalLight.shadow.camera.near=0.5; directionalLight.shadow.camera.far=500;
+            directionalLight.shadow.camera.left=-150; directionalLight.shadow.camera.right=150;
+            directionalLight.shadow.camera.top=150; directionalLight.shadow.camera.bottom=-150; 
+            scene.add(directionalLight);
+
+            const groundPlaneGeometry = new THREE.PlaneGeometry(800, 800); 
+            const groundPlaneMaterial = new THREE.MeshStandardMaterial({
+                color: 0x708045, 
+                roughness: 0.9, 
+                metalness: 0.05, 
+            });
+            const groundPlane = new THREE.Mesh(groundPlaneGeometry, groundPlaneMaterial);
+            groundPlane.rotation.x = -Math.PI / 2;
+            groundPlane.position.y = groundLevel;
+            groundPlane.receiveShadow = true;
+            scene.add(groundPlane);
+
+
+            const waterMaterial = new THREE.MeshStandardMaterial({color:0x334466,roughness:0.1,metalness:0.2,transparent:true,opacity:0.65,side:THREE.DoubleSide});
+            const riverPathPoints = [new THREE.Vector3(-150,waterSurfaceLevel,-50),new THREE.Vector3(-80,waterSurfaceLevel,-30),new THREE.Vector3(20,waterSurfaceLevel,20),new THREE.Vector3(90,waterSurfaceLevel,60),new THREE.Vector3(160,waterSurfaceLevel,40)];
+            riverCurve = new THREE.CatmullRomCurve3(riverPathPoints); 
+            const riverWidth = 15;
+            const riverBedShape = new THREE.Shape(); riverBedShape.moveTo(-riverWidth/2,0); riverBedShape.lineTo(riverWidth/2,0); riverBedShape.lineTo(riverWidth/2,riverBedDepth); riverBedShape.lineTo(-riverWidth/2,riverBedDepth); riverBedShape.closePath();
+            const riverBedPathBasePoints = riverPathPoints.map(p => new THREE.Vector3(p.x,waterSurfaceLevel-riverBedDepth,p.z));
+            const riverBedCurve = new THREE.CatmullRomCurve3(riverBedPathBasePoints);
+            const extrudeSettingsRiverBed = {steps:100,bevelEnabled:false,extrudePath:riverBedCurve};
+            const riverBedGeometry = new THREE.ExtrudeGeometry(riverBedShape,extrudeSettingsRiverBed);
+            const riverBedMaterial = new THREE.MeshStandardMaterial({color:0x403020});
+            const riverBedMesh = new THREE.Mesh(riverBedGeometry,riverBedMaterial); riverBedMesh.receiveShadow=true; scene.add(riverBedMesh);
+            const waterSurfaceShape = new THREE.Shape(); waterSurfaceShape.moveTo(-riverWidth/2,0); waterSurfaceShape.lineTo(riverWidth/2,0); waterSurfaceShape.lineTo(riverWidth/2,0.01); waterSurfaceShape.lineTo(-riverWidth/2,0.01); waterSurfaceShape.closePath();
+            const extrudeSettingsWater = {steps:100,bevelEnabled:false,extrudePath:riverCurve};
+            const waterSurfaceGeometry = new THREE.ExtrudeGeometry(waterSurfaceShape,extrudeSettingsWater);
+            riverMesh = new THREE.Mesh(waterSurfaceGeometry,waterMaterial); riverMesh.receiveShadow=true; scene.add(riverMesh);
+
+            const lakeShape = new THREE.Shape(); lakeShape.absellipse(0,0,40,25,0,Math.PI*2,false);
+            const lakePoints = lakeShape.getPoints(20); const irregularLakeShape = new THREE.Shape(); irregularLakeShape.moveTo(lakePoints[0].x,lakePoints[0].y);
+            for(let i=1;i<lakePoints.length;i++){ const p1=lakePoints[(i-1+lakePoints.length)%lakePoints.length], p2=lakePoints[i]; irregularLakeShape.quadraticCurveTo((p1.x+p2.x)/2+(Math.random()-0.5)*10,(p1.y+p2.y)/2+(Math.random()-0.5)*10,p2.x,p2.y); }
+            irregularLakeShape.quadraticCurveTo((lakePoints[lakePoints.length-1].x+lakePoints[0].x)/2+(Math.random()-0.5)*10,(lakePoints[lakePoints.length-1].y+lakePoints[0].y)/2+(Math.random()-0.5)*10,lakePoints[0].x,lakePoints[0].y);
+            const lakeGeometry = new THREE.ShapeGeometry(irregularLakeShape); lakeMesh = new THREE.Mesh(lakeGeometry,waterMaterial);
+            lakeMesh.rotation.x = -Math.PI/2; lakeMesh.position.set(-120,waterSurfaceLevel,80); lakeMesh.receiveShadow=true; scene.add(lakeMesh);
+
+            const roadPathPoints = [
+                new THREE.Vector3(-100, roadSurfaceYLevel, 0), new THREE.Vector3(-60, roadSurfaceYLevel, 30),
+                new THREE.Vector3(-10, roadSurfaceYLevel, 5),  new THREE.Vector3(30, roadSurfaceYLevel, -25),
+                new THREE.Vector3(70, roadSurfaceYLevel, 10),  new THREE.Vector3(110, roadSurfaceYLevel, 40)
+            ];
+            pathCurve = new THREE.CatmullRomCurve3(roadPathPoints);
+            
+            const roadShape = new THREE.Shape();
+            roadShape.moveTo(-roadThickness / 2, -flatRoadWidth / 2);
+            roadShape.lineTo(-roadThickness / 2,  flatRoadWidth / 2);
+            roadShape.lineTo( roadThickness / 2,  flatRoadWidth / 2);
+            roadShape.lineTo( roadThickness / 2, -flatRoadWidth / 2);
+            roadShape.closePath();
+
+            const extrudeSettingsRoad = { steps: 200, bevelEnabled: false, extrudePath: pathCurve };
+            const roadGeometry = new THREE.ExtrudeGeometry(roadShape, extrudeSettingsRoad);
+            const roadMaterial = new THREE.MeshStandardMaterial({ color: 0x383838, roughness: 0.8 });
+            roadMesh = new THREE.Mesh(roadGeometry, roadMaterial);
+            roadMesh.receiveShadow = true;
+            scene.add(roadMesh);
+
+            const bridgeStartT = 0.4; 
+            const bridgeEndT = 0.7;   
+            createBridgeElements(pathCurve, bridgeStartT, bridgeEndT, flatRoadWidth, roadThickness, roadSurfaceYLevel);
+
+            car = new THREE.Group(); 
+            scene.add(car); 
+            const carBodyColor = 0x990000; 
+            const carWheelColor = 0x181818; 
+            const carWindowMaterial = new THREE.MeshPhongMaterial({ color: 0x4477AA, transparent: true, opacity: 0.5, shininess: 90, side: THREE.DoubleSide });
+            const carChassisLength = 2.0; const carChassisHeight = 0.7; const carChassisWidth = 1.4;
+            const bodyGeometry = new THREE.BoxGeometry(carChassisLength, carChassisHeight, carChassisWidth);
+            const bodyMaterial = new THREE.MeshStandardMaterial({ color: carBodyColor, roughness: 0.4, metalness: 0.3 });
+            mainBody = new THREE.Mesh(bodyGeometry, bodyMaterial); 
+            mainBody.castShadow = true; mainBody.receiveShadow = true; 
+            mainBody.position.y = carChassisHeight / 2; 
+            car.add(mainBody);
+            const cabinLength = 1.2; const cabinHeight = 0.6; const cabinWidth = carChassisWidth * 0.9; 
+            const cabinGeometry = new THREE.BoxGeometry(cabinLength, cabinHeight, cabinWidth);
+            const cabinMaterial = new THREE.MeshStandardMaterial({ color: carBodyColor, roughness: 0.5, metalness: 0.2 }); 
+            const cabin = new THREE.Mesh(cabinGeometry, cabinMaterial); 
+            cabin.castShadow = true; cabin.position.set(carChassisLength * 0.05, cabinHeight/2 , 0); 
+            mainBody.add(cabin);
+            const windshieldWidth = cabinWidth*0.9; const windshieldHeight = cabinHeight*0.65; const windshieldGeo = new THREE.PlaneGeometry(windshieldWidth,windshieldHeight);
+            const windshield = new THREE.Mesh(windshieldGeo,carWindowMaterial); windshield.position.set(cabinLength/2+0.01,0,0); windshield.rotation.y = -Math.PI/25; cabin.add(windshield);
+            const sideWindowLength = cabinLength*0.35; const sideWindowHeight = cabinHeight*0.55; const sideWindowGeo = new THREE.PlaneGeometry(sideWindowLength,sideWindowHeight);
+            const sideWindowLeft1 = new THREE.Mesh(sideWindowGeo,carWindowMaterial); sideWindowLeft1.position.set(cabinLength*0.2,0,cabinWidth/2+0.01); sideWindowLeft1.rotation.y = Math.PI/2; cabin.add(sideWindowLeft1);
+            const sideWindowLeft2 = new THREE.Mesh(sideWindowGeo,carWindowMaterial); sideWindowLeft2.position.set(-cabinLength*0.2,0,cabinWidth/2+0.01); sideWindowLeft2.rotation.y = Math.PI/2; cabin.add(sideWindowLeft2);
+            const sideWindowRight1 = new THREE.Mesh(sideWindowGeo,carWindowMaterial); sideWindowRight1.position.set(cabinLength*0.2,0,-(cabinWidth/2+0.01)); sideWindowRight1.rotation.y = -Math.PI/2; cabin.add(sideWindowRight1);
+            const sideWindowRight2 = new THREE.Mesh(sideWindowGeo,carWindowMaterial); sideWindowRight2.position.set(-cabinLength*0.2,0,-(cabinWidth/2+0.01)); sideWindowRight2.rotation.y = -Math.PI/2; cabin.add(sideWindowRight2);
+            const wheelRadius = 0.3; const wheelThickness = 0.2; const wheelGeometry = new THREE.CylinderGeometry(wheelRadius,wheelRadius,wheelThickness,20);
+            const wheelMaterial = new THREE.MeshStandardMaterial({color:carWheelColor,roughness:0.8});
+            const wheelPositions = [new THREE.Vector3(carChassisLength*0.38,-carChassisHeight/2+wheelRadius*0.9,carChassisWidth/2+wheelThickness/2), new THREE.Vector3(carChassisLength*0.38,-carChassisHeight/2+wheelRadius*0.9,-(carChassisWidth/2+wheelThickness/2)), new THREE.Vector3(-carChassisLength*0.38,-carChassisHeight/2+wheelRadius*0.9,carChassisWidth/2+wheelThickness/2), new THREE.Vector3(-carChassisLength*0.38,-carChassisHeight/2+wheelRadius*0.9,-(carChassisWidth/2+wheelThickness/2))];
+            wheelPositions.forEach(pos=>{const wheel = new THREE.Mesh(wheelGeometry,wheelMaterial); wheel.position.copy(pos); wheel.rotation.x = Math.PI/2; wheel.castShadow = true; mainBody.add(wheel);});
+
+            const stopMarkerGeometry = new THREE.SphereGeometry(0.8,16,16);
+            const roadTopActualSurfaceY = roadSurfaceYLevel + roadThickness / 2; 
+            stops.forEach(stop => {
+                const stopMarkerMaterial = new THREE.MeshStandardMaterial({color:0xffff00,emissive:0x555500});
+                const marker = new THREE.Mesh(stopMarkerGeometry,stopMarkerMaterial);
+                const posOnPath = pathCurve.getPointAt(stop.t); 
+                marker.position.set(posOnPath.x, roadTopActualSurfaceY + 0.8, posOnPath.z);
+                marker.castShadow = true; scene.add(marker); stopMarkers.push(marker);
+            });
+
+            const numTrees = 1125, numBushes = 1875, numBirds = 30; 
+            const vegetationPlacementArea = 280;
+            for (let i=0; i<numTrees; i++) {let pos=new THREE.Vector3((Math.random()-0.5)*vegetationPlacementArea*2,groundLevel,(Math.random()-0.5)*vegetationPlacementArea*2); let tooClose=false; for(let t=0;t<=1;t+=0.1){if(pathCurve.getPointAt(t).distanceToSquared(new THREE.Vector3(pos.x,roadSurfaceYLevel,pos.z))<(flatRoadWidth*2)**2){tooClose=true;break;}} if(!tooClose)createTree(pos);}
+            for (let i=0; i<numBushes; i++) {let pos=new THREE.Vector3((Math.random()-0.5)*vegetationPlacementArea*2,groundLevel,(Math.random()-0.5)*vegetationPlacementArea*2); let tooClose=false; for(let t=0;t<=1;t+=0.1){if(pathCurve.getPointAt(t).distanceToSquared(new THREE.Vector3(pos.x,roadSurfaceYLevel,pos.z))<(flatRoadWidth*1.5)**2){tooClose=true;break;}} if(!tooClose)createBush(pos);}
+            for (let i=0; i<numBirds; i++) birds.push(createBird());
+            
+            window.addEventListener('resize', onWindowResize, false);
+            prevButton.addEventListener('click',()=>navigateStop(-1)); nextButton.addEventListener('click',()=>navigateStop(1));
+            if(previewResumeButton){previewResumeButton.addEventListener('click',()=>{if(resumePath==="YOUR_RESUME.pdf"&&!resumePath.startsWith("https://")){alert("Update resumePath");docIframe.src="about:blank";}else{docIframe.src=resumePath;}docModal.style.display='block';});}
+            if(modalCloseButton){modalCloseButton.addEventListener('click',()=>{docModal.style.display='none';docIframe.src='';});}
+            window.addEventListener('click',(event)=>{if(event.target==docModal){docModal.style.display='none';docIframe.src='';}});
+            updateButtonStates(); navigateToStop(0);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function hideAllSections() { for (const key in sectionOverlays) sectionOverlays[key].style.display = 'none'; }
+        function showSection(sectionId) {
+            hideAllSections();
+            if (sectionOverlays[sectionId]) sectionOverlays[sectionId].style.display = 'block';
+        }
+        function navigateToStop(stopIndex) {
+            if (stopIndex < 0 || stopIndex >= stops.length) return;
+            currentStopIndex = stopIndex;
+            targetT = stops[currentStopIndex].t;
+            hideAllSections();
+            updateButtonStates();
+        }
+        function navigateStop(direction) {
+            let newIndex = currentStopIndex + direction;
+            if (newIndex >= 0 && newIndex < stops.length) navigateToStop(newIndex);
+        }
+        function updateButtonStates() {
+            prevButton.disabled = currentStopIndex <= 0;
+            nextButton.disabled = currentStopIndex >= stops.length - 1;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (Math.abs(currentT - targetT) > 0.00001) {
+                 const direction = Math.sign(targetT - currentT);
+                 let speedFactor = Math.min(1, Math.abs(targetT - currentT) * 5 + 0.1);
+                 currentT += direction * carSpeed * speedFactor;
+                 currentT = THREE.MathUtils.clamp(currentT, 0, 1);
+                if (Math.abs(currentT - targetT) < carSpeed * 0.5) {
+                    currentT = targetT;
+                    if (currentStopIndex !== -1 && stops[currentStopIndex]) {
+                        showSection(stops[currentStopIndex].sectionId);
+                    }
+                } else { hideAllSections(); }
+            } else if (currentStopIndex !== -1 && stops[currentStopIndex] && sectionOverlays[stops[currentStopIndex].sectionId].style.display === 'none') {
+                 showSection(stops[currentStopIndex].sectionId);
+            }
+
+            const carPositionOnPath = pathCurve.getPointAt(currentT);
+            const carActualTopSurfaceY = roadSurfaceYLevel + roadThickness / 2;
+            car.position.set(carPositionOnPath.x, carActualTopSurfaceY, carPositionOnPath.z);
+
+            const lookAtT = Math.min(currentT + 0.001, 1.0);
+            const lookAtPositionOnPath = pathCurve.getPointAt(lookAtT);
+            car.lookAt(lookAtPositionOnPath.x, carActualTopSurfaceY, lookAtPositionOnPath.z);
+            car.rotateY(Math.PI / 2); 
+
+
+            const wheelRotationAmount = (currentT - prevCarT) * pathCurve.getLength() * 0.5; 
+            if (mainBody && mainBody.children.length > 0) { 
+                mainBody.children.forEach(child => {
+                    if (child.geometry && child.geometry.type === "CylinderGeometry") { 
+                        child.rotation.z -= wheelRotationAmount; 
+                    }
+                });
+            }
+            prevCarT = currentT; 
+
+
+            const idealOffset = new THREE.Vector3(0,7,-12); const idealLookAtOffset = new THREE.Vector3(0,2,10);
+            const targetCameraPosition = idealOffset.clone().applyMatrix4(car.matrixWorld);
+            const targetLookAtPosition = idealLookAtOffset.clone().applyMatrix4(car.matrixWorld);
+            camera.position.lerp(targetCameraPosition,cameraLerpFactor); camera.lookAt(targetLookAtPosition);
+
+            birds.forEach(bird => {
+                bird.position.addScaledVector(bird.userData.direction, bird.userData.speed);
+                const wing = bird.children[0];
+                if (wing) {
+                    const flapAngle = Math.sin(Date.now() * 0.01 * bird.userData.speed * 50) * 0.2;
+                    wing.rotation.x = flapAngle;
+                }
+                const limit = fogFar*1.2;
+                if((bird.position.z>limit && bird.userData.direction.z>0) || (bird.position.z<-limit && bird.userData.direction.z<0)){bird.position.z = bird.userData.direction.z>0 ? -limit : limit; bird.position.x = (Math.random()-0.5)*2*limit; bird.position.y = bird.userData.altitude = Math.random()*50+80;}
+                if(Math.abs(bird.position.x)>limit){bird.position.x = Math.sign(bird.position.x)*-limit*0.9;}
+            });
+            
+            renderer.render(scene, camera);
+        }
+    </script>
+</body>
+</html>
