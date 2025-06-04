@@ -54,6 +54,7 @@
         <p><b>Second checkpoint:</b>Live trading Experience.</p>
         <p><b>Third checkpoint:</b>Macro aspect on the economy.</p>
         <p><b>Fourth checkpoint:</b>Idea generation.</p>
+        <p><b>Fifth checkpoint:</b>Automated Trading System Results.</p>
         <p>Go to the next checkpoint to see my CV.</p>
     </div>
     <div id="about-me-section" class="section-overlay">
@@ -61,7 +62,12 @@
         <p>I have a deep passion for finance, economics and investment who always is looking for ways to expand my knowledge.</p>
         <p>I enjoy creating interactive experiences and learning new technologies.</p>
         <button id="preview-resume-button" class="doc-preview-btn">View My Resume (PDF)</button>
-        <p>The next checkpoint is my live trading results</p>
+        <div style="margin-top: 10px;">
+            <button id="preview-doc1-button" class="doc-preview-btn" style="background-color: #28a745;">View FTMO</button>
+        </div>
+        <div style="margin-top: 10px;">
+            <button id="preview-doc2-button" class="doc-preview-btn" style="background-color: #fd7e14;">View the5ers</button>
+        </div>
     </div>
     <div id="pictures-section" class="section-overlay">
         <h2>Live Experience</h2>
@@ -157,6 +163,23 @@
         <p>03/03/2025</p>
         <img src="images/HE1.png" alt="placeholder">
     </div>
+    <div id="system-section" class="section-overlay">
+        <h2>Automated Trading system</h2>
+        <p>We shall look at the performance of my automated trading system over many assets to prove it is not over fitted and the results are good over many asset classes.</p>
+        <p>This was coded in python but i have adjusted it on metaeditor so it can run the system as my brokerage is on metatrader.</p>
+        <h3>OJC: 2019 - 2025</h3>
+        <p>The following results are from OJC (orange juice) with the system performing exceptionally well on it.</p>
+        <b>CAGR: 66.27%</b>
+        <img src="images/ojcsystem.jpg" alt="system">
+        <h3>AAPL: 2017 - 2025</h3>
+        <p>The following results are from AAPLE</p>
+        <b>CAGR: 25.284%</b>
+        <img src="images/AAPL.jpg" alt="system">
+        <h3>JPM: 2019 - 2025</h3>
+        <p>The following results are from JP Morgan.</p>
+        <b>CAGR: 40.14%</b>
+        <img src="images/JPM.jpg" alt="system">
+    </div>
 
     <div id="document-modal" class="modal">
         <div class="modal-content">
@@ -188,31 +211,32 @@
         import * as THREE from 'three';
 
         let scene, camera, renderer;
-        let car, mainBody, pathCurve, roadMesh, stopMarkers = []; 
+        let car, mainBody, pathCurve, roadMesh, stopMarkers = [];
         let sunMesh, birds = [];
         let riverMesh, lakeMesh, bridgeSupportsGroup, bridgeRailingsGroup;
-        let riverCurve; 
+        let riverCurve;
         let currentStopIndex = -1;
         let targetT = 0, currentT = 0;
-        let prevCarT = 0; 
+        let prevCarT = 0;
         const carSpeed = 0.01, cameraLerpFactor = 0.05;
 
         const groundLevel = 0;
-        const waterSurfaceLevel = groundLevel - 7.0; 
-        const riverBedDepth = 1.5;                   
-        const roadSurfaceYLevel = groundLevel + 0.1; 
-        const roadThickness = 0.2;                   
-        const flatRoadWidth = 4.0;                   
-        
-        const fogNear = 70; 
-        const fogFar = 250; 
+        const waterSurfaceLevel = groundLevel - 7.0;
+        const riverBedDepth = 1.5;
+        const roadSurfaceYLevel = groundLevel + 0.1;
+        const roadThickness = 0.2;
+        const flatRoadWidth = 4.0;
+
+        const fogNear = 70;
+        const fogFar = 250;
 
         const stops = [
             { t: 0.1, sectionId: 'intro-section', name: 'Intro' },
-            { t: 0.3, sectionId: 'about-me-section', name: 'About Me' },
-            { t: 0.5, sectionId: 'pictures-section', name: 'Pictures' },
-            { t: 0.75, sectionId: 'Macro-section', name: 'Macro' },
-            { t: 0.95, sectionId: 'fun-section', name: 'Fun'}
+            { t: 0.2, sectionId: 'about-me-section', name: 'About Me' },
+            { t: 0.4, sectionId: 'pictures-section', name: 'Pictures' },
+            { t: 0.65, sectionId: 'Macro-section', name: 'Macro' },
+            { t: 0.80, sectionId: 'fun-section', name: 'Fun'},
+            { t: 0.95, sectionId: 'system-section', name: 'system'}
         ];
 
         const sectionOverlays = {
@@ -221,6 +245,7 @@
             'pictures-section': document.getElementById('pictures-section'),
             'Macro-section': document.getElementById('Macro-section'),
             'fun-section': document.getElementById('fun-section'),
+            'system-section': document.getElementById('system-section'),
         };
         const prevButton = document.getElementById('prev-stop');
         const nextButton = document.getElementById('next-stop');
@@ -228,7 +253,15 @@
         const docIframe = document.getElementById('document-iframe');
         const previewResumeButton = document.getElementById('preview-resume-button');
         const modalCloseButton = document.getElementById('modal-close-button');
+
+        // --- IMPORTANT: UPDATE THESE PATHS ---
         const resumePath = "Faran.Ahmad.CV.pdf";
+        const document1Path = "FTMO.png"; 
+        const document2Path = "the5ers.jpg"; 
+        // --- END IMPORTANT ---
+
+        const previewDoc1Button = document.getElementById('preview-doc1-button');
+        const previewDoc2Button = document.getElementById('preview-doc2-button');
 
         init();
         animate();
@@ -304,13 +337,13 @@
             scene.add(bridgeRailingsGroup);
 
             const supportRadius = 0.4;
-            const bridgeRoadTopSurfaceY = roadCenterY + roadThick / 2; 
-            const bridgeRoadBottomSurfaceY = roadCenterY - roadThick / 2; 
-            const supportBaseY = waterSurfaceLevel - riverBedDepth - 0.5; 
-            const supportTopY = bridgeRoadBottomSurfaceY; 
+            const bridgeRoadTopSurfaceY = roadCenterY + roadThick / 2;
+            const bridgeRoadBottomSurfaceY = roadCenterY - roadThick / 2;
+            const supportBaseY = waterSurfaceLevel - riverBedDepth - 0.5;
+            const supportTopY = bridgeRoadBottomSurfaceY;
             const supportHeight = supportTopY - supportBaseY;
 
-            if (supportHeight <= 0) { 
+            if (supportHeight <= 0) {
                 console.warn("Bridge support height is zero or negative. Check Y-levels. SupportTopY:", supportTopY, "SupportBaseY:", supportBaseY);
                 return;
             }
@@ -322,16 +355,16 @@
             const railingBarThickness = 0.05;
             const railingMaterial = new THREE.MeshStandardMaterial({ color: 0x454545 });
             const bridgeLength = roadPath.getLength() * (bridgeEndT - bridgeStartT);
-            const desiredSegmentLength = Math.max(1.5, roadW * 0.5); 
+            const desiredSegmentLength = Math.max(1.5, roadW * 0.5);
             const numSegments = Math.max(3, Math.floor(bridgeLength / desiredSegmentLength));
 
             for (let i = 0; i <= numSegments; i++) {
                 const t = bridgeStartT + (i / numSegments) * (bridgeEndT - bridgeStartT);
-                const pointOnPath = roadPath.getPointAt(t); 
+                const pointOnPath = roadPath.getPointAt(t);
                 const tangent = roadPath.getTangentAt(t).normalize();
-                const normal = new THREE.Vector3(-tangent.z, 0, tangent.x); 
+                const normal = new THREE.Vector3(-tangent.z, 0, tangent.x);
 
-                if (i % Math.max(1, Math.floor(numSegments / 3)) === 0 || i === numSegments) { 
+                if (i % Math.max(1, Math.floor(numSegments / 3)) === 0 || i === numSegments) {
                     const supportL = new THREE.Mesh(supportGeometry, supportMaterial);
                     supportL.position.set( pointOnPath.x + normal.x * (roadW / 2 + supportRadius * 0.7), supportBaseY + supportHeight / 2, pointOnPath.z + normal.z * (roadW / 2 + supportRadius * 0.7) );
                     supportL.castShadow = true; supportL.receiveShadow = true; bridgeSupportsGroup.add(supportL);
@@ -351,7 +384,7 @@
                     const railSegmentLengthVal = pointOnPath.distanceTo(nextPointOnPath);
                     const barGeometry = new THREE.BoxGeometry(railingBarThickness, railingBarThickness, railSegmentLengthVal + 0.01);
                     const midPoint = pointOnPath.clone().lerp(nextPointOnPath, 0.5);
-                    for (let h_idx = 0; h_idx < 2; h_idx++) { 
+                    for (let h_idx = 0; h_idx < 2; h_idx++) {
                         const barY = bridgeRoadTopSurfaceY + railingHeight * (h_idx === 0 ? 0.3 : 0.7);
                         const barL = new THREE.Mesh(barGeometry, railingMaterial);
                         barL.position.set( midPoint.x + normal.x * (roadW / 2 + railingPostThickness / 2), barY, midPoint.z + normal.z * (roadW / 2 + railingPostThickness / 2) );
@@ -369,15 +402,15 @@
 
         function init() {
             scene = new THREE.Scene();
-            
-            const upperSkyBlue = new THREE.Color(0x5080D0); 
-            const horizonOrange = new THREE.Color(0xFFB070); 
-            const sunsetGroundHemiColor = new THREE.Color(0x403020); 
 
-            scene.background = upperSkyBlue; 
-            scene.fog = new THREE.Fog(horizonOrange, fogNear, fogFar); 
+            const upperSkyBlue = new THREE.Color(0x5080D0);
+            const horizonOrange = new THREE.Color(0xFFB070);
+            const sunsetGroundHemiColor = new THREE.Color(0x403020);
 
-            const hemisphereLight = new THREE.HemisphereLight(upperSkyBlue, sunsetGroundHemiColor, 1.0); 
+            scene.background = upperSkyBlue;
+            scene.fog = new THREE.Fog(horizonOrange, fogNear, fogFar);
+
+            const hemisphereLight = new THREE.HemisphereLight(upperSkyBlue, sunsetGroundHemiColor, 1.0);
             scene.add(hemisphereLight);
 
 
@@ -387,34 +420,34 @@
             renderer = new THREE.WebGLRenderer({ antialias: true });
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping; 
-            renderer.toneMappingExposure = 1.0; 
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.0;
             document.getElementById('scene-container').appendChild(renderer.domElement);
 
-            const ambientLight = new THREE.AmbientLight(0xFFE5CC, 0.5); 
+            const ambientLight = new THREE.AmbientLight(0xFFE5CC, 0.5);
             scene.add(ambientLight);
-            
-            const sunGeometry = new THREE.SphereGeometry(20,32,32); 
-            const sunMaterial = new THREE.MeshBasicMaterial({color:0xFFFF99, fog:false}); 
-            sunMesh = new THREE.Mesh(sunGeometry,sunMaterial); 
-            sunMesh.position.set(-180,80,-240); 
-            scene.add(sunMesh); 
-            
-            const directionalLight = new THREE.DirectionalLight(0xFFD0A0, 1.2); 
+
+            const sunGeometry = new THREE.SphereGeometry(20,32,32);
+            const sunMaterial = new THREE.MeshBasicMaterial({color:0xFFFF99, fog:false});
+            sunMesh = new THREE.Mesh(sunGeometry,sunMaterial);
+            sunMesh.position.set(-180,80,-240);
+            scene.add(sunMesh);
+
+            const directionalLight = new THREE.DirectionalLight(0xFFD0A0, 1.2);
             directionalLight.position.copy(sunMesh.position).normalize().multiplyScalar(100);
             directionalLight.target.position.set(0,0,0); scene.add(directionalLight.target);
-            directionalLight.castShadow = true; 
+            directionalLight.castShadow = true;
             directionalLight.shadow.mapSize.width=4096; directionalLight.shadow.mapSize.height=4096;
             directionalLight.shadow.camera.near=0.5; directionalLight.shadow.camera.far=500;
             directionalLight.shadow.camera.left=-150; directionalLight.shadow.camera.right=150;
-            directionalLight.shadow.camera.top=150; directionalLight.shadow.camera.bottom=-150; 
+            directionalLight.shadow.camera.top=150; directionalLight.shadow.camera.bottom=-150;
             scene.add(directionalLight);
 
-            const groundPlaneGeometry = new THREE.PlaneGeometry(800, 800); 
+            const groundPlaneGeometry = new THREE.PlaneGeometry(800, 800);
             const groundPlaneMaterial = new THREE.MeshStandardMaterial({
-                color: 0x708045, 
-                roughness: 0.9, 
-                metalness: 0.05, 
+                color: 0x708045,
+                roughness: 0.9,
+                metalness: 0.05,
             });
             const groundPlane = new THREE.Mesh(groundPlaneGeometry, groundPlaneMaterial);
             groundPlane.rotation.x = -Math.PI / 2;
@@ -425,7 +458,7 @@
 
             const waterMaterial = new THREE.MeshStandardMaterial({color:0x334466,roughness:0.1,metalness:0.2,transparent:true,opacity:0.65,side:THREE.DoubleSide});
             const riverPathPoints = [new THREE.Vector3(-150,waterSurfaceLevel,-50),new THREE.Vector3(-80,waterSurfaceLevel,-30),new THREE.Vector3(20,waterSurfaceLevel,20),new THREE.Vector3(90,waterSurfaceLevel,60),new THREE.Vector3(160,waterSurfaceLevel,40)];
-            riverCurve = new THREE.CatmullRomCurve3(riverPathPoints); 
+            riverCurve = new THREE.CatmullRomCurve3(riverPathPoints);
             const riverWidth = 15;
             const riverBedShape = new THREE.Shape(); riverBedShape.moveTo(-riverWidth/2,0); riverBedShape.lineTo(riverWidth/2,0); riverBedShape.lineTo(riverWidth/2,riverBedDepth); riverBedShape.lineTo(-riverWidth/2,riverBedDepth); riverBedShape.closePath();
             const riverBedPathBasePoints = riverPathPoints.map(p => new THREE.Vector3(p.x,waterSurfaceLevel-riverBedDepth,p.z));
@@ -452,7 +485,7 @@
                 new THREE.Vector3(70, roadSurfaceYLevel, 10),  new THREE.Vector3(110, roadSurfaceYLevel, 40)
             ];
             pathCurve = new THREE.CatmullRomCurve3(roadPathPoints);
-            
+
             const roadShape = new THREE.Shape();
             roadShape.moveTo(-roadThickness / 2, -flatRoadWidth / 2);
             roadShape.lineTo(-roadThickness / 2,  flatRoadWidth / 2);
@@ -467,27 +500,27 @@
             roadMesh.receiveShadow = true;
             scene.add(roadMesh);
 
-            const bridgeStartT = 0.4; 
-            const bridgeEndT = 0.7;   
+            const bridgeStartT = 0.4;
+            const bridgeEndT = 0.7;
             createBridgeElements(pathCurve, bridgeStartT, bridgeEndT, flatRoadWidth, roadThickness, roadSurfaceYLevel);
 
-            car = new THREE.Group(); 
-            scene.add(car); 
-            const carBodyColor = 0x990000; 
-            const carWheelColor = 0x181818; 
+            car = new THREE.Group();
+            scene.add(car);
+            const carBodyColor = 0x990000;
+            const carWheelColor = 0x181818;
             const carWindowMaterial = new THREE.MeshPhongMaterial({ color: 0x4477AA, transparent: true, opacity: 0.5, shininess: 90, side: THREE.DoubleSide });
             const carChassisLength = 2.0; const carChassisHeight = 0.7; const carChassisWidth = 1.4;
             const bodyGeometry = new THREE.BoxGeometry(carChassisLength, carChassisHeight, carChassisWidth);
             const bodyMaterial = new THREE.MeshStandardMaterial({ color: carBodyColor, roughness: 0.4, metalness: 0.3 });
-            mainBody = new THREE.Mesh(bodyGeometry, bodyMaterial); 
-            mainBody.castShadow = true; mainBody.receiveShadow = true; 
-            mainBody.position.y = carChassisHeight / 2; 
+            mainBody = new THREE.Mesh(bodyGeometry, bodyMaterial);
+            mainBody.castShadow = true; mainBody.receiveShadow = true;
+            mainBody.position.y = carChassisHeight / 2;
             car.add(mainBody);
-            const cabinLength = 1.2; const cabinHeight = 0.6; const cabinWidth = carChassisWidth * 0.9; 
+            const cabinLength = 1.2; const cabinHeight = 0.6; const cabinWidth = carChassisWidth * 0.9;
             const cabinGeometry = new THREE.BoxGeometry(cabinLength, cabinHeight, cabinWidth);
-            const cabinMaterial = new THREE.MeshStandardMaterial({ color: carBodyColor, roughness: 0.5, metalness: 0.2 }); 
-            const cabin = new THREE.Mesh(cabinGeometry, cabinMaterial); 
-            cabin.castShadow = true; cabin.position.set(carChassisLength * 0.05, cabinHeight/2 , 0); 
+            const cabinMaterial = new THREE.MeshStandardMaterial({ color: carBodyColor, roughness: 0.5, metalness: 0.2 });
+            const cabin = new THREE.Mesh(cabinGeometry, cabinMaterial);
+            cabin.castShadow = true; cabin.position.set(carChassisLength * 0.05, cabinHeight/2 , 0);
             mainBody.add(cabin);
             const windshieldWidth = cabinWidth*0.9; const windshieldHeight = cabinHeight*0.65; const windshieldGeo = new THREE.PlaneGeometry(windshieldWidth,windshieldHeight);
             const windshield = new THREE.Mesh(windshieldGeo,carWindowMaterial); windshield.position.set(cabinLength/2+0.01,0,0); windshield.rotation.y = -Math.PI/25; cabin.add(windshield);
@@ -502,24 +535,63 @@
             wheelPositions.forEach(pos=>{const wheel = new THREE.Mesh(wheelGeometry,wheelMaterial); wheel.position.copy(pos); wheel.rotation.x = Math.PI/2; wheel.castShadow = true; mainBody.add(wheel);});
 
             const stopMarkerGeometry = new THREE.SphereGeometry(0.8,16,16);
-            const roadTopActualSurfaceY = roadSurfaceYLevel + roadThickness / 2; 
+            const roadTopActualSurfaceY = roadSurfaceYLevel + roadThickness / 2;
             stops.forEach(stop => {
                 const stopMarkerMaterial = new THREE.MeshStandardMaterial({color:0xffff00,emissive:0x555500});
                 const marker = new THREE.Mesh(stopMarkerGeometry,stopMarkerMaterial);
-                const posOnPath = pathCurve.getPointAt(stop.t); 
+                const posOnPath = pathCurve.getPointAt(stop.t);
                 marker.position.set(posOnPath.x, roadTopActualSurfaceY + 0.8, posOnPath.z);
                 marker.castShadow = true; scene.add(marker); stopMarkers.push(marker);
             });
 
-            const numTrees = 1125, numBushes = 1875, numBirds = 30; 
+            const numTrees = 1125, numBushes = 1875, numBirds = 30;
             const vegetationPlacementArea = 280;
             for (let i=0; i<numTrees; i++) {let pos=new THREE.Vector3((Math.random()-0.5)*vegetationPlacementArea*2,groundLevel,(Math.random()-0.5)*vegetationPlacementArea*2); let tooClose=false; for(let t=0;t<=1;t+=0.1){if(pathCurve.getPointAt(t).distanceToSquared(new THREE.Vector3(pos.x,roadSurfaceYLevel,pos.z))<(flatRoadWidth*2)**2){tooClose=true;break;}} if(!tooClose)createTree(pos);}
             for (let i=0; i<numBushes; i++) {let pos=new THREE.Vector3((Math.random()-0.5)*vegetationPlacementArea*2,groundLevel,(Math.random()-0.5)*vegetationPlacementArea*2); let tooClose=false; for(let t=0;t<=1;t+=0.1){if(pathCurve.getPointAt(t).distanceToSquared(new THREE.Vector3(pos.x,roadSurfaceYLevel,pos.z))<(flatRoadWidth*1.5)**2){tooClose=true;break;}} if(!tooClose)createBush(pos);}
             for (let i=0; i<numBirds; i++) birds.push(createBird());
-            
+
             window.addEventListener('resize', onWindowResize, false);
             prevButton.addEventListener('click',()=>navigateStop(-1)); nextButton.addEventListener('click',()=>navigateStop(1));
-            if(previewResumeButton){previewResumeButton.addEventListener('click',()=>{if(resumePath==="YOUR_RESUME.pdf"&&!resumePath.startsWith("https://")){alert("Update resumePath");docIframe.src="about:blank";}else{docIframe.src=resumePath;}docModal.style.display='block';});}
+
+            if(previewResumeButton){
+                previewResumeButton.addEventListener('click',()=>{
+                    if(resumePath === "Faran.Ahmad.CV.pdf" && !resumePath.startsWith("http")) { // Example check, adjust as needed
+                        // If it's the default and not a web link, maybe it's not updated
+                        // alert("Resume path might need updating."); // Optional: alert if you want to be very specific
+                        docIframe.src = resumePath; // Still try to load it
+                    } else {
+                        docIframe.src = resumePath;
+                    }
+                    docModal.style.display = 'block';
+                });
+            }
+
+            // --- NEW EVENT LISTENERS FOR FTMO AND THE5ERS BUTTONS ---
+            if(previewDoc1Button){
+                previewDoc1Button.addEventListener('click', () => {
+                    if (document1Path === "YOUR_FTMO_DOCUMENT.pdf" && !document1Path.startsWith("http")) {
+                        alert("Please update the 'document1Path' variable in the script with the correct path to your FTMO document.");
+                        docIframe.src = "about:blank"; // Prevent loading a non-existent/default file
+                    } else {
+                        docIframe.src = document1Path;
+                    }
+                    docModal.style.display = 'block';
+                });
+            }
+
+            if(previewDoc2Button){
+                previewDoc2Button.addEventListener('click', () => {
+                    if (document2Path === "YOUR_THE5ERS_DOCUMENT.pdf" && !document2Path.startsWith("http")) {
+                        alert("Please update the 'document2Path' variable in the script with the correct path to your the5ers document.");
+                        docIframe.src = "about:blank"; // Prevent loading a non-existent/default file
+                    } else {
+                        docIframe.src = document2Path;
+                    }
+                    docModal.style.display = 'block';
+                });
+            }
+            // --- END NEW EVENT LISTENERS ---
+
             if(modalCloseButton){modalCloseButton.addEventListener('click',()=>{docModal.style.display='none';docIframe.src='';});}
             window.addEventListener('click',(event)=>{if(event.target==docModal){docModal.style.display='none';docIframe.src='';}});
             updateButtonStates(); navigateToStop(0);
@@ -577,18 +649,18 @@
             const lookAtT = Math.min(currentT + 0.001, 1.0);
             const lookAtPositionOnPath = pathCurve.getPointAt(lookAtT);
             car.lookAt(lookAtPositionOnPath.x, carActualTopSurfaceY, lookAtPositionOnPath.z);
-            car.rotateY(Math.PI / 2); 
+            car.rotateY(Math.PI / 2);
 
 
-            const wheelRotationAmount = (currentT - prevCarT) * pathCurve.getLength() * 0.5; 
-            if (mainBody && mainBody.children.length > 0) { 
+            const wheelRotationAmount = (currentT - prevCarT) * pathCurve.getLength() * 0.5;
+            if (mainBody && mainBody.children.length > 0) {
                 mainBody.children.forEach(child => {
-                    if (child.geometry && child.geometry.type === "CylinderGeometry") { 
-                        child.rotation.z -= wheelRotationAmount; 
+                    if (child.geometry && child.geometry.type === "CylinderGeometry") {
+                        child.rotation.z -= wheelRotationAmount;
                     }
                 });
             }
-            prevCarT = currentT; 
+            prevCarT = currentT;
 
 
             const idealOffset = new THREE.Vector3(0,7,-12); const idealLookAtOffset = new THREE.Vector3(0,2,10);
@@ -607,7 +679,7 @@
                 if((bird.position.z>limit && bird.userData.direction.z>0) || (bird.position.z<-limit && bird.userData.direction.z<0)){bird.position.z = bird.userData.direction.z>0 ? -limit : limit; bird.position.x = (Math.random()-0.5)*2*limit; bird.position.y = bird.userData.altitude = Math.random()*50+80;}
                 if(Math.abs(bird.position.x)>limit){bird.position.x = Math.sign(bird.position.x)*-limit*0.9;}
             });
-            
+
             renderer.render(scene, camera);
         }
     </script>
